@@ -13,6 +13,7 @@
   --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
   --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   color-scheme:light; box-sizing:border-box;
+  --gutter:max(16px,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme:dark){
@@ -21,8 +22,9 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--body)}
 a{color:inherit}
-.wrap{max-width:720px;margin:0 auto;padding:0 16px}
-header{padding:22px 16px 20px;margin:0 -16px;background:var(--green-deep);color:#fff;border-radius:0 0 22px 22px}
+html{-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:0 var(--gutter)}
+header{padding:22px var(--gutter) 20px;margin:0 calc(-1 * var(--gutter));background:var(--green-deep);color:#fff;border-radius:0 0 22px 22px}
 .logo{font-family:var(--display);font-weight:800;font-size:1.6rem;text-decoration:none;letter-spacing:-.01em}
 .logo span{color:var(--sun)}
 .tagline{margin:4px 0 0;color:#d6efe2;font-size:.95rem}
@@ -48,6 +50,7 @@ h2{font-size:1.2rem;margin:24px 0 8px}
 .thumb{width:56px;height:56px;object-fit:cover;border-radius:10px;background:var(--line)}
 .hero{display:block;width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin:8px 0 4px;background:var(--line)}
 .msg{padding:20px 0;color:var(--muted)}
+.msg:empty{display:none}
 .hidden{display:none}
 .back{display:inline-block;margin:16px 0 4px;color:var(--muted)}
 .title{font-size:1.6rem;margin:6px 0 4px}
@@ -60,6 +63,29 @@ h2{font-size:1.2rem;margin:24px 0 8px}
 .btn.alt{background:var(--green-deep,#0b5e38);color:#fff;margin-top:0}
 .warn{padding:12px;border-radius:10px;border-left:4px solid #d8372c;background:var(--sun-soft);font-size:.92rem}
 footer{padding:28px 0 36px;color:var(--muted);font-size:.85rem}
+
+.chip{min-height:44px}
+.search{min-height:48px}
+#annonce{max-width:720px;margin:0 auto}
+@media (min-width:768px){
+  :root{--gutter:max(24px,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px))}
+  .wrap{max-width:980px}
+  header{padding-top:30px;padding-bottom:28px;border-radius:0 0 28px 28px}
+  .logo{font-size:2rem}
+  .tagline{font-size:1.05rem;max-width:560px}
+  .search{max-width:520px}
+  .chips{flex-wrap:wrap;overflow:visible}
+  .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .item{height:100%;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface);transition:border-color .15s,transform .15s}
+  .item:hover{border-color:var(--green);transform:translateY(-2px)}
+  .title{font-size:2rem}
+  footer{text-align:center}
+}
+@media (min-width:1180px){
+  .wrap{max-width:1180px}
+  .list{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){.item{transition:none}.item:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -71,7 +97,7 @@ footer{padding:28px 0 36px;color:var(--muted);font-size:.85rem}
 </header>
 
 <main id="accueil">
-  <input class="search" id="recherche" type="search" placeholder="Rechercher une bourse, un emploi, une formation" aria-label="Rechercher">
+  <input class="search" id="recherche" type="search" placeholder="Rechercher une annonce" aria-label="Rechercher">
   <div class="chips" role="group" aria-label="Catégories">
     <button class="chip" data-filter="tout" aria-pressed="true">Tout</button>
     <button class="chip" data-filter="bourse" aria-pressed="false">Bourses</button>
