@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CiviPass – Bourses, emplois, formations et bons plans</title>
+<meta name="description" content="Bourses, emplois, formations et bons plans vérifiés pour le Sénégal, avec la date limite en premier.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&display=swap">
+<style>
+:root{
+  --paper:#f6f7f4; --surface:#fff; --ink:#14233a; --muted:#5b6778; --line:#dde2e8;
+  --green:#0e7c4a; --green-deep:#0b5e38; --green-soft:#e1f2e9; --sun:#e9b124; --sun-soft:#fbf1d3; --red:#b3342b;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#0f1826;--surface:#172234;--ink:#eef2f7;--muted:#9aa7b8;--line:#273449;--green:#4cc28a;--green-soft:#12362a;--sun:#f0bf3c;--sun-soft:#3a3115;--red:#ef8a82;color-scheme:dark}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--body)}
+a{color:inherit}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+header{padding:22px 16px 20px;margin:0 -16px;background:var(--green-deep);color:#fff;border-radius:0 0 22px 22px}
+.logo{font-family:var(--display);font-weight:800;font-size:1.6rem;text-decoration:none;letter-spacing:-.01em}
+.logo span{color:var(--sun)}
+.tagline{margin:4px 0 0;color:#d6efe2;font-size:.95rem}
+.stripe{display:flex;width:72px;height:5px;margin-top:12px;border-radius:3px;overflow:hidden}
+.stripe i{flex:1}.stripe i:nth-child(1){background:#3fbf80}.stripe i:nth-child(2){background:#e9b124}.stripe i:nth-child(3){background:#d8372c}
+.search{width:100%;margin:16px 0 12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit}
+.search:focus-visible,.chip:focus-visible,.btn:focus-visible,a:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:999px;font:inherit;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--green-deep);color:#fff;border-color:var(--green-deep)}
+h1,h2{font-family:var(--display);line-height:1.15;letter-spacing:-.01em}
+h2{font-size:1.2rem;margin:24px 0 8px}
+.list{list-style:none;margin:0;padding:0}
+.item{display:grid;grid-template-columns:76px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.left{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;background:var(--green-soft);color:var(--green);padding:8px 4px;text-align:center}
+.left b{font-family:var(--display);font-size:1.7rem;line-height:1}
+.left small{font-size:.75rem}
+.left.urgent{background:var(--sun-soft);color:var(--ink)}
+.item h3{margin:0 0 2px;font-size:1.02rem;line-height:1.3}
+.meta{margin:0;color:var(--muted);font-size:.88rem}
+.badge{display:inline-block;margin-top:6px;font-size:.8rem;color:var(--green)}
+.msg{padding:20px 0;color:var(--muted)}
+.hidden{display:none}
+.back{display:inline-block;margin:16px 0 4px;color:var(--muted)}
+.title{font-size:1.6rem;margin:6px 0 4px}
+.verified{display:inline-block;margin:8px 0 16px;padding:6px 10px;border-radius:8px;background:var(--green-soft);color:var(--green);font-size:.9rem}
+.block{padding:14px 0;border-top:1px solid var(--line)}
+.block h2{font-size:1.05rem;margin:0 0 6px}
+.block p{margin:0;white-space:pre-line}
+.deadline{font-weight:700;color:var(--red)}
+.btn{display:block;text-align:center;margin:20px 0;padding:14px;border-radius:10px;background:var(--sun);color:#14233a;font-weight:700;text-decoration:none}
+.warn{padding:12px;border-radius:10px;border-left:4px solid #d8372c;background:var(--sun-soft);font-size:.92rem}
+footer{padding:28px 0 36px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="logo" href="#accueil">Civi<span>Pass</span></a>
+  <p class="tagline">Bourses, emplois, formations et bons plans. Informations vérifiées, date limite en premier.</p>
+  <div class="stripe" aria-hidden="true"><i></i><i></i><i></i></div>
+</header>
+
+<main id="accueil">
+  <input class="search" id="recherche" type="search" placeholder="Rechercher une bourse, un emploi, une formation" aria-label="Rechercher">
+  <div class="chips" role="group" aria-label="Catégories">
+    <button class="chip" data-filter="tout" aria-pressed="true">Tout</button>
+    <button class="chip" data-filter="bourse" aria-pressed="false">Bourses</button>
+    <button class="chip" data-filter="emploi" aria-pressed="false">Emplois</button>
+    <button class="chip" data-filter="formation" aria-pressed="false">Formations</button>
+    <button class="chip" data-filter="bonplan" aria-pressed="false">Bons plans</button>
+  </div>
+  <h2>Date limite proche</h2>
+  <p class="msg" id="statut">Chargement des annonces…</p>
+  <ul class="list" id="liste"></ul>
+</main>
+
+<article id="annonce" class="hidden"></article>
+
+<footer>CiviPass vérifie chaque annonce avant de la publier. Aucune candidature sérieuse ne demande d’argent.</footer>
+</div>
+
+<script>
+var SUPABASE_URL = "https://vufpnwxhlcqcjetwvzmc.supabase.co";
+var SUPABASE_KEY = "sb_publishable_VJzt_Rp7fZ25XqG5Y7bw7A_d62V3aBh";
+var LABELS = {bourse:"Bourse", emploi:"Emploi", formation:"Formation", bonplan:"Bon plan"};
+var annonces = [], filtre = "tout", recherche = "", charge = false;
+
+function el(tag, cls, text){
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined && text !== null) e.textContent = text;
+  return e;
+}
+function joursRestants(d){
+  if (!d) return null;
+  return Math.ceil((new Date(d + "T23:59:59") - new Date()) / 86400000);
+}
+function dateFr(d){
+  if (!d) return "";
+  return new Date(d + "T12:00:00").toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"});
+}
+function lienSur(u){ return /^https?:\/\//i.test(u || ""); }
+
+function chargerAnnonces(){
+  fetch(SUPABASE_URL + "/rest/v1/annonces?select=*&order=date_limite.asc.nullslast", {
+    headers: {apikey: SUPABASE_KEY}
+  })
+  .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(function(rows){
+    annonces = rows.filter(function(a){ var j = joursRestants(a.date_limite); return j === null || j >= 0; });
+    charge = true; afficherListe(); route();
+  })
+  .catch(function(){
+    document.getElementById("statut").textContent = "Impossible de charger les annonces. Vérifie ta connexion et réessaie.";
+  });
+}
+
+function afficherListe(){
+  var ul = document.getElementById("liste"), st = document.getElementById("statut");
+  ul.textContent = "";
+  var q = recherche.toLowerCase();
+  var liste = annonces.filter(function(a){
+    var okCat = filtre === "tout" || a.categorie === filtre;
+    var okQ = !q || (a.titre + " " + (a.resume || "") + " " + (a.pays || "")).toLowerCase().indexOf(q) !== -1;
+    return okCat && okQ;
+  });
+  st.textContent = liste.length ? "" : (charge ? "Aucune annonce pour le moment." : "Chargement des annonces…");
+  liste.forEach(function(a){
+    var li = el("li"), lien = el("a", "item"), left = el("div", "left"), corps = el("div");
+    lien.href = "#annonce=" + encodeURIComponent(a.id);
+    var j = joursRestants(a.date_limite);
+    if (j === null){ left.appendChild(el("small", "", "Sans date")); }
+    else if (j === 0){ left.appendChild(el("b", "", "Auj.")); left.appendChild(el("small", "", "dernier jour")); }
+    else { left.appendChild(el("b", "", String(j))); left.appendChild(el("small", "", j > 1 ? "jours" : "jour")); }
+    if (j !== null && j <= 9) left.classList.add("urgent");
+    corps.appendChild(el("h3", "", a.titre));
+    corps.appendChild(el("p", "meta", [LABELS[a.categorie], a.pays, a.niveau].filter(Boolean).join(" · ")));
+    if (a.verifie_le) corps.appendChild(el("span", "badge", "Vérifié le " + dateFr(a.verifie_le)));
+    lien.appendChild(left); lien.appendChild(corps); li.appendChild(lien); ul.appendChild(li);
+  });
+}
+
+function bloc(titre, texte, cls){
+  if (!texte) return null;
+  var s = el("section", "block");
+  s.appendChild(el("h2", "", titre));
+  s.appendChild(el("p", cls || "", texte));
+  return s;
+}
+
+function afficherDetail(id){
+  var box = document.getElementById("annonce"), a = null;
+  box.textContent = "";
+  annonces.forEach(function(x){ if (x.id === id) a = x; });
+  var back = el("a", "back", "Retour aux annonces"); back.href = "#accueil"; box.appendChild(back);
+  if (!a){ box.appendChild(el("p", "msg", charge ? "Cette annonce n’existe plus ou n’est plus disponible." : "Chargement…")); return; }
+  box.appendChild(el("h1", "title", a.titre));
+  box.appendChild(el("p", "meta", [LABELS[a.categorie], a.pays, a.niveau].filter(Boolean).join(" · ")));
+  if (a.verifie_le) box.appendChild(el("span", "verified", "Vérifié le " + dateFr(a.verifie_le)));
+  [bloc("C’est quoi", a.resume), bloc("Pour qui", a.pour_qui), bloc("Documents à fournir", a.documents),
+   bloc("Date limite", dateFr(a.date_limite), "deadline"), bloc("Comment postuler", a.comment_postuler)
+  ].forEach(function(b){ if (b) box.appendChild(b); });
+  if (lienSur(a.lien_officiel)){
+    var btn = el("a", "btn", "Aller au site officiel");
+    btn.href = a.lien_officiel; btn.target = "_blank"; btn.rel = "noopener noreferrer"; box.appendChild(btn);
+  }
+  box.appendChild(el("p", "warn", "Une vraie bourse ou une vraie offre ne demande jamais d’argent pour candidater. Si on t’en demande, signale-nous l’annonce."));
+}
+
+function route(){
+  var h = location.hash, detail = h.indexOf("#annonce=") === 0;
+  document.getElementById("accueil").classList.toggle("hidden", detail);
+  document.getElementById("annonce").classList.toggle("hidden", !detail);
+  if (detail) afficherDetail(decodeURIComponent(h.slice(9)));
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+
+document.querySelectorAll(".chip").forEach(function(chip){
+  chip.addEventListener("click", function(){
+    filtre = chip.dataset.filter;
+    document.querySelectorAll(".chip").forEach(function(c){ c.setAttribute("aria-pressed", c === chip ? "true" : "false"); });
+    afficherListe();
+  });
+});
+document.getElementById("recherche").addEventListener("input", function(e){ recherche = e.target.value; afficherListe(); });
+
+route();
+chargerAnnonces();
+</script>
+</body>
+</html>
